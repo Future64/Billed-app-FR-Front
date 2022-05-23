@@ -19,6 +19,7 @@ export default class NewBill {
   }
   handleChangeFile = (e) => {
     e.preventDefault();
+    const btnSubmit = this.document.querySelector("#btn-send-bill");
     const file = this.document.querySelector(`input[data-testid="file"]`)
       .files[0];
     const filePath = e.target.value.split(/\\/g);
@@ -28,7 +29,21 @@ export default class NewBill {
     formData.append("file", file);
     formData.append("email", email);
 
-    console.log(this.store);
+    const fileTypeValid = ["jpg", "jpeg", "png"];
+    const extension = fileName.split(".").pop();
+    const findedExt = fileTypeValid.indexOf(extension);
+
+    /* Checking if the file extension is valid. If it is not valid, it will disable the submit button and
+    alert the user. */
+    if (findedExt === -1) {
+      btnSubmit.disabled = true;
+      alert(
+        "Les formats acceptés pour ce justificatif sont: jpg, jpeg ou png !"
+      );
+    } else {
+      btnSubmit.disabled = false;
+    }
+
     this.store
       .bills()
       .create({
