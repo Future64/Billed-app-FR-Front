@@ -34,7 +34,7 @@ export default class NewBill {
     const findedExt = fileTypeValid.indexOf(extension);
 
     /* Checking if the file extension is valid. If it is not valid, it will disable the submit button and
-    alert the user. */
+    alert the user. If it is valid, it will enable the submit button and create the bill. */
     if (findedExt === -1) {
       btnSubmit.disabled = true;
       alert(
