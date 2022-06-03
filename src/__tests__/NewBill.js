@@ -10,6 +10,18 @@ describe("Given I am connected as an employee", () => {
     test("Then the file handler should show a file", () => {
       document.body.innerHTML = NewBillUI();
       // const onNavigate = ROUTES_PATH.NewBill;
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+      Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
+      });
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({
+          type: "Admin",
+        })
+      );
       const newBill = new NewBill({
         document,
         onNavigate,

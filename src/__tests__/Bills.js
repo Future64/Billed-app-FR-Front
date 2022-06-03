@@ -19,6 +19,7 @@ describe("Given I am connected as an employee", () => {
       /*----- MAX*/
       document.body.innerHTML = BillsUI({ data: bills });
       expect(screen.getAllByTestId("icon-eye")).toBeTruthy();
+      expect(screen.getByText("test3")).toBeTruthy();
     });
     test("Then bill icon in vertical layout should be highlighted", async () => {
       Object.defineProperty(window, "localStorage", {
@@ -52,6 +53,28 @@ describe("Given I am connected as an employee", () => {
       const antiChrono = (a, b) => (a < b ? 1 : -1);
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
+    });
+    test("test getBills function if store is undefined", () => {
+      const newBills = new Bills({
+        document,
+        onNavigate,
+        store: null,
+        localStorage: window.localStorage,
+      });
+      const resultGetBills = newBills.getBills();
+      console.log(resultGetBills);
+      expect(resultGetBills).toBe(undefined);
+    });
+    test("test getBills function if store isn't undefined", async () => {
+      const newBills = new Bills({
+        document,
+        onNavigate,
+        store: data,
+        localStorage: window.localStorage,
+      });
+      const resultGetBills = await newBills.getBills();
+      console.log(resultGetBills.length);
+      expect(resultGetBills.length).toBe(4);
     });
   });
   /* Testing that when the eye icon is clicked, a modal should open. ----- MAX*/
