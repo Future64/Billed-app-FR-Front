@@ -1,3 +1,5 @@
+// Send "Nouvelle note de frais"
+
 import VerticalLayout from './VerticalLayout.js'
 
 export default () => {

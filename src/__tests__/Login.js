@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import LoginUI from "../views/LoginUI";
 import Login from "../containers/Login.js";
 import { ROUTES } from "../constants/routes";
@@ -106,7 +110,6 @@ describe("Given that I am a user on login page", () => {
         })
       );
     });
-
     test("It should renders Bills page", () => {
       expect(screen.getAllByText("Mes notes de frais")).toBeTruthy();
     });
@@ -166,13 +169,13 @@ describe("Given that I am a user on login page", () => {
 
       const inputEmailUser = screen.getByTestId("admin-email-input");
       fireEvent.change(inputEmailUser, { target: { value: inputData.email } });
-      expect(inputEmailUser.value).toBe(inputData.email);
+      expect(inputEmailUser.value).toBe(inputData.email); 
 
       const inputPasswordUser = screen.getByTestId("admin-password-input");
       fireEvent.change(inputPasswordUser, {
         target: { value: inputData.password },
       });
-      expect(inputPasswordUser.value).toBe(inputData.password);
+      expect(inputPasswordUser.value).toBe(inputData.password); 
 
       const form = screen.getByTestId("form-admin");
 
@@ -192,7 +195,7 @@ describe("Given that I am a user on login page", () => {
 
       let PREVIOUS_LOCATION = "";
 
-      const store = jest.fn();
+      const store = jest.fn(); 
 
       const login = new Login({
         document,
@@ -202,11 +205,14 @@ describe("Given that I am a user on login page", () => {
         store,
       });
 
-      const handleSubmit = jest.fn(login.handleSubmitAdmin);
-      login.login = jest.fn().mockResolvedValue({});
+      const handleSubmit = jest.fn(login.handleSubmitAdmin); 
+      login.login = jest.fn().mockResolvedValue({}); 
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
-      expect(handleSubmit).toHaveBeenCalled();
+      // Test : expect(jest.fn()).toHaveBeenCalled()
+      // Test : Expected number of calls: >= 1
+      // Test : Received number of calls:    0
+      expect(handleSubmit).toHaveBeenCalled(); 
       expect(window.localStorage.setItem).toHaveBeenCalled();
       expect(window.localStorage.setItem).toHaveBeenCalledWith(
         "user",
@@ -219,6 +225,8 @@ describe("Given that I am a user on login page", () => {
       );
     });
 
+    // Test : expect(received).toBeTruthy()
+    // Test : Received: null
     test("It should renders HR dashboard page", () => {
       expect(screen.queryByText("Validations")).toBeTruthy();
     });

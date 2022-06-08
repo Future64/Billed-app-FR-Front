@@ -13,6 +13,7 @@ export default ({ data, loading, error }) => {
     return ErrorPage(error)
   }
 
+  // Dashboard admin
   return (`
     <div class='layout'>
       ${VerticalLayout(120)}
