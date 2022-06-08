@@ -1,3 +1,5 @@
+// Mes notes de frais : listes & Modal justificatifs
+
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
@@ -5,8 +7,8 @@ import LoadingPage from "./LoadingPage.js"
 import Actions from './Actions.js'
 
 const row = (bill) => {
-    return (`
-    <tr>
+  return (`
+    <tr data-testid="bill">
       <td>${bill.type}</td>
       <td>${bill.name}</td>
       <td>${bill.date}</td>
@@ -17,21 +19,18 @@ const row = (bill) => {
       </td>
     </tr>
     `)
-}
+  }
 
 const rows = (data) => {
-    const antiChrono = (a, b) => ((a.date < b.date) ? 1 : -1)
-    if (data && data.length) {
-        const dataSorted = [...data].sort(antiChrono)
-        return dataSorted.map(bill => row(bill)).join("")
-    }
-    return ""
-        // return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  return (data && data.length) ? data
+    .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1)) // Bug #1: added line
+    .map(bill => row(bill)).join("") : ""
 }
 
-export default ({ data: bills, loading, error }) => {
-
-    const modal = () => (`
+export default ({ data: bills, loading, error }) => { // fonction BillUI()
+  
+  // Modal justificatifs, côté employé
+  const modal = () => (`
     <div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -48,13 +47,14 @@ export default ({ data: bills, loading, error }) => {
     </div>
   `)
 
-    if (loading) {
-        return LoadingPage()
-    } else if (error) {
-        return ErrorPage(error)
-    }
-
-    return (`
+  if (loading) {
+    return LoadingPage()
+  } else if (error) {
+    return ErrorPage(error)
+  }
+  
+  // // Mes notes de frais : listes // Bug #1 bills, côté employé
+  return (`
     <div class='layout'>
       ${VerticalLayout(120)}
       <div class='content'>
@@ -81,5 +81,6 @@ export default ({ data: bills, loading, error }) => {
         </div>
       </div>
       ${modal()}
-    </div>`)
+    </div>`
+  )
 }
