@@ -164,4 +164,3 @@ describe("When I do fill fields in correct format and I click on submit button",
     expect(console.error).toBeCalled();
   });
 });
->>>>>>> dev3
