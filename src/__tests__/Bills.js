@@ -101,10 +101,7 @@ describe("Given I am connected as an employee", () => {
   describe("When I navigate on Bills page", () => {
     // Integration test #1
     test("Then bills page display with correct title", async () => {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ type: "Employee", email: "a@b" })
-      );
+      localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@b" }));
       const root = document.createElement("div");
       root.setAttribute("id", "root");
       document.body.append(root);
@@ -121,13 +118,8 @@ describe("Given I am connected as an employee", () => {
     describe("When a 200 response or an error occurs on API", () => {
       beforeEach(() => {
         jest.spyOn(store, "bills");
-        Object.defineProperty(window, "localStorage", {
-          value: localStorageMock,
-        });
-        window.localStorage.setItem(
-          "user",
-          JSON.stringify({ type: "Employee", email: "a@b" })
-        );
+        Object.defineProperty(window, "localStorage", {value: localStorageMock,});
+        window.localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@b" }));
         const root = document.createElement("div");
         root.setAttribute("id", "root");
         document.body.appendChild(root);
