@@ -43,6 +43,35 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
     });
+    // Add post soutenance
+    describe("And I click on the eye icon", () => {
+      test("A modal should open", () => {
+        document.body.innerHTML = BillsUI({ data: bills });
+        const newBills = new Bills({
+          document,
+          onNavigate,
+          firestore: null,
+          localStorage: window.localStorage,
+        });
+        newBills.handleClickIconEye = jest.fn();
+        screen.getAllByTestId("icon-eye")[0].click();
+        expect(newBills.handleClickIconEye).toBeCalled();
+      });
+      test("Then the modal should display the attached image", () => {
+        document.body.innerHTML = BillsUI({ data: bills });
+        const newBills = new Bills({
+          document,
+          onNavigate,
+          firestore: null,
+          localStorage: window.localStorage,
+        });
+        const iconEye = document.querySelector(`div[data-testid="icon-eye"]`);
+        $.fn.modal = jest.fn();
+        newBills.handleClickIconEye(iconEye);
+        expect($.fn.modal).toBeCalled();
+        expect(document.querySelector(".modal")).toBeTruthy();
+      });
+    });
   });
 
   // tests #2
@@ -57,6 +86,8 @@ describe("Given I am connected as an employee", () => {
       const bills = new Bills({ store: mockStore, document });
       const billsRetrieved = await bills.getBills();
       expect(billsRetrieved.length).toBe(4);
+      const getBillsMock = jest.fn((e) => bill.getBills());
+      expect(getBillsMock).not.toHaveBeenCalled();
     });
   });
 
@@ -101,7 +132,10 @@ describe("Given I am connected as an employee", () => {
   describe("When I navigate on Bills page", () => {
     // Integration test #1
     test("Then bills page display with correct title", async () => {
-      localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@b" }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ type: "Employee", email: "a@b" })
+      );
       const root = document.createElement("div");
       root.setAttribute("id", "root");
       document.body.append(root);
@@ -118,8 +152,13 @@ describe("Given I am connected as an employee", () => {
     describe("When a 200 response or an error occurs on API", () => {
       beforeEach(() => {
         jest.spyOn(store, "bills");
-        Object.defineProperty(window, "localStorage", {value: localStorageMock,});
-        window.localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@b" }));
+        Object.defineProperty(window, "localStorage", {
+          value: localStorageMock,
+        });
+        window.localStorage.setItem(
+          "user",
+          JSON.stringify({ type: "Employee", email: "a@b" })
+        );
         const root = document.createElement("div");
         root.setAttribute("id", "root");
         document.body.appendChild(root);
